@@ -1,5 +1,8 @@
 var URL_SERVICES = "http://neuromedia.com.co/servicios/";
 
+var ID_NEW_SELECTED = 0;
+var OFFICES_MAP;
+
 
 // Init App
 var myApp = new Framework7({
@@ -26,6 +29,10 @@ var rightView = myApp.addView('.view-right', {
 //*********        FUNCIONES GLOBALES                  ***********  
 //*********                                            *********** 
 //**************************************************************** 
+
+
+
+
 function close_modal() {
     myApp.closeModal();
 }
@@ -45,6 +52,12 @@ function onOffline() {
 function validate_email(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
+}
+
+function close_session() {
+    myApp.closePanel('left');
+    myApp.formDeleteData('session');
+    mainView.router.load({url: 'login.html'});
 }
 
 function list_news_by_json(news_list) {
@@ -69,6 +82,51 @@ function list_news_by_json(news_list) {
 
         $("#home_news_list").append(news_item);
     }
+
+
+    $(".new-detail-item").click(function () {
+        var new_id = $(this).attr("data-id");
+
+        ID_NEW_SELECTED = new_id;
+
+        mainView.router.load({url: 'new_detail.html'});
+
+
+    });
+
+
+
+}
+
+function get_new_detail_by_id(id_new) {
+    $.ajax({
+        url: URL_SERVICES + "traerNoticiaPorID.php?id=" + id_new,
+        type: "GET",
+        dataType: 'text',
+        success: function (data) {
+
+            var data_parse = JSON.parse(data);
+            if (data_parse.status == 200) {
+
+                var new_detail = data_parse.data;
+
+                $("#new_detail_img_container").css("background-image", "url('" + new_detail.foto + "')");
+                $("#new_detail_tittle").text(new_detail.nombre);
+                $("#new_detail_date").text(new_detail.fecha_publicado);
+                $("#new_detail_description").text(new_detail.descripcion);
+
+
+            } else {
+                onOffline();
+            }
+
+
+
+        },
+        error: function () {
+            onOffline();
+        }
+    });
 }
 
 function charge_news() {
@@ -85,6 +143,75 @@ function charge_news() {
             if (news_parse.status == 200) {
                 var news_list = news_parse.data;
                 list_news_by_json(news_list);
+            } else {
+                show_notification_message(news_parse.message);
+            }
+        },
+        error: function () {
+            onOffline();
+        }
+    });
+}
+function charge_offices() {
+
+
+
+
+    $.ajax({
+        url: URL_SERVICES + "traerTodoSedes.php",
+        type: "GET",
+        dataType: 'text',
+        success: function (data) {
+
+
+
+            var data_parse = JSON.parse(data);
+
+            if (data_parse.status == 200) {
+
+                var offices_list = data_parse.data;
+
+
+                for (var i = 0; i < offices_list.length; i++) {
+
+
+
+                    var office_content = "<div class='card ks-card-header-pic'>" +
+                            "<div class='card-content'>" +
+                            "<div style='background-image:url(" + offices_list[i].foto + ");' valign='bottom' class='card-header color-white no-border'>" + offices_list[i].nombre + "</div>" +
+                            "<div class='card-content'> " +
+                            "<div class='card-content-inner'>" +
+                            "<p>" + offices_list[i].ciudad + "</p>" +
+                            "<p>" + offices_list[i].direccion + "</p>" +
+                            "<p>" + offices_list[i].correo + "</p>" +
+                            "<p>" + offices_list[i].telefono1 + "</p>" +
+                            "<p>" + offices_list[i].telefono2 + "</p>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>";
+
+
+                    var infowindow = new google.maps.InfoWindow({
+                        content: office_content
+                    });
+
+
+                    var office_lat = parseFloat(offices_list[i].latitud);
+                    var office_lng = parseFloat(offices_list[i].longitud);
+
+                    var office_position = {lat: office_lat, lng: office_lng};
+
+                    var marker = new google.maps.Marker({
+                        position: office_position,
+                        map: OFFICES_MAP,
+                        title: offices_list[i].nombre
+                    });
+                    marker.addListener('click', function () {
+                        infowindow.open(OFFICES_MAP, marker);
+                    });
+
+                }
+
             } else {
                 show_notification_message(news_parse.message);
             }
@@ -166,6 +293,40 @@ myApp.onPageInit('login', function (page) {
 
 
 });
+
+
+//*****************************************************************  
+//*********                NEW DETAIL                       ************ 
+//***************************************************************** 
+
+myApp.onPageInit('new_detail', function (page) {
+
+    get_new_detail_by_id(ID_NEW_SELECTED);
+
+});
+
+
+
+//*****************************************************************  
+//*********                offices                       ************ 
+//***************************************************************** 
+
+myApp.onPageInit('offices', function (page) {
+
+
+    var windowHeight = $(window).height() - 56;
+    $('#map').css('height', windowHeight + 'px');
+
+
+
+    OFFICES_MAP = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 3.4375000000000004, lng: -76.52277777777778},
+        zoom: 10
+    });
+
+    charge_offices();
+});
+
 //*****************************************************************  
 //*********                HOME                       ************ 
 //***************************************************************** 
@@ -222,11 +383,14 @@ myApp.onPageInit('register', function (page) {
                             data: reg_data,
                             success: function (data) {
 
+
+                                console.log("data---->" + data);
+
                                 var data_parse = JSON.parse(data);
 
                                 if (data_parse.status == 200) {
                                     myApp.formStoreData('session', reg_data);
-                                    mainView.router.load({url: 'home.html'});
+                                    //mainView.router.load({url: 'home.html'});
                                 } else {
                                     show_notification_message(data_parse.message);
                                 }
@@ -269,7 +433,8 @@ var OP_PAGE_SPLASH = myApp.onPageInit('splash', function (page) {
             mainView.router.load({url: 'home.html'});
         }
         else {
-            mainView.router.load({url: 'login.html'});
+            //   mainView.router.load({url: 'login.html'});
+            mainView.router.load({url: 'home.html'});
         }
     }, 1000);
 });
