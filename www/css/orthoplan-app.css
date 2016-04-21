@@ -1,0 +1,167 @@
+ 
+/****************************************/
+/*********** SPLASH SCREEN **************/
+/****************************************/
+
+.op-splash-screen{
+    background-image: url(../img/splash_screen.jpg);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+
+}
+
+/****************************************/
+/*********** LOGIN  SCREEN **************/
+/****************************************/
+
+.log-reg-page-content{
+    padding-top: 50px!important;
+}
+
+.login-header-logo{
+    width: 40%;
+    max-width: 70%;
+    margin:0 auto;
+
+}
+
+.login-screen-content{
+    background-image: url(../img/login_background.jpg);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+}
+
+.login-buttons{
+    background-color: #E64345!important;
+}
+
+.item-input-field-login-container:after{
+    background-color: rgba(255,255,255,1)!important;
+}
+
+.item-input-field-login::-webkit-input-placeholder {color: white!important;}
+.item-input-field-login::-moz-placeholder{color: white!important;}
+.item-input-field-login:-moz-placeholder{color: white!important;}
+.item-input-field-login:-ms-input-placeholder{color: white!important;}
+.item-input-field-login:focus::-webkit-input-placeholder{color: white!important;}
+.item-input-field-login:focus::-moz-placeholder{color: white!important;}
+.item-input-field-login:focus:-moz-placeholder{color: white!important;}
+.item-input-field-login:focus:-ms-input-placeholder{color: white!important;}
+
+/*******************************************/
+/*********** REGISTER  SCREEN **************/
+/*******************************************/
+
+
+.item-input-field-register:after{
+    background-color: rgba(67,69,230,1)!important;
+}
+
+.input-field-register[placeholder] {
+    color: blue !important;
+}
+
+.input-field-register::-webkit-input-placeholder {color: #4345E6!important;}
+.input-field-register::-moz-placeholder{color:  #4345E6!important;}
+.input-field-register:-moz-placeholder{color:  #4345E6!important;}
+.input-field-register:-ms-input-placeholder{color:  #4345E6!important;}
+.input-field-register:focus::-webkit-input-placeholder{color:  #4345E6!important;}
+.input-field-register:focus::-moz-placeholder{color:  #4345E6!important;}
+.input-field-register:focus:-moz-placeholder{color:  #4345E6!important;}
+.input-field-register:focus:-ms-input-placeholder{color:  #4345E6!important;}
+
+
+
+/*******************************************/
+/*********** OFFICES ******************/
+/*******************************************/
+#map {
+    height: 300px;
+    width: 100%;
+
+}
+
+.card{
+    margin: 0px!important;
+}
+
+/*******************************************/
+/*********** HOME  SCREEN ******************/
+/*******************************************/
+
+
+
+.preloader-jhome-news{
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.home-footer-icon{
+    font-size: 25px;
+}
+
+.home-content-block{
+    height: 100%!important;
+    padding: 0px!important;
+    margin:0px!important;
+
+}
+
+.list-block-home{
+    margin:0px!important;
+}
+
+.home-header-img-container{
+    height: 35%!important;
+    background-image: url('../img/home_header.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.home-message-container{
+    height: 15%!important;
+    background-color: #E64345!important;
+    color:white!important;
+    padding:1px 5px 1px 5px;
+}
+.home-news-list-container{
+    height: 50%!important;
+}
+
+.header-banner-tittle{
+    font-size: 25px;
+    margin: 0px!important;
+}
+
+.header-banner-desc{
+    font-size: 18px;
+    margin: 0px!important;
+}
+
+.new-home-tittle{
+    color: #E64345!important;
+    font-style: italic;
+}
+
+.toolbar-bottom{
+    position: absolute!important;
+    bottom: 0px!important;
+}
+
+
+/*******************************************/
+/*********** DATE  SCREEN ******************/
+/*******************************************/
+
+.date-header-img-container{
+    height: 35%!important;
+    background-image: url('../img/date_header.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.date-form-container{
+    height: 65%!important;
+}
