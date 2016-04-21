@@ -203,6 +203,17 @@ function charge_offices() {
                 var offices_list = data_parse.data;
 
 
+                $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyBEmJb07d2cqBvO5UmRjVU6WC4rQDz-kVo')
+                        .done(function () {
+
+
+
+                            OFFICES_MAP = new google.maps.Map(document.getElementById('map'), {
+                                center: {lat: 3.4375000000000004, lng: -76.52277777777778},
+                                zoom: 10
+                            });
+
+                        });
                 for (var i = 0; i < offices_list.length; i++) {
 
 
@@ -242,6 +253,9 @@ function charge_offices() {
                     });
 
                 }
+
+
+
 
             } else {
                 show_notification_message(news_parse.message);
@@ -336,7 +350,7 @@ function show_agreements() {
 
                     $("#agreement_list").append(agreement_template);
                 }
- 
+
             } else {
                 show_notification_message(data_parse.message);
             }
@@ -459,10 +473,6 @@ myApp.onPageInit('offices', function (page) {
 
 
 
-    OFFICES_MAP = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 3.4375000000000004, lng: -76.52277777777778},
-        zoom: 10
-    });
 
     charge_offices();
 });
@@ -623,8 +633,8 @@ var app = {
         LP_PAGE_SPLASH.trigger();
     }
 };
-app.initialize();
-//OP_PAGE_SPLASH.trigger();
+//app.initialize();
+OP_PAGE_SPLASH.trigger();
 
 
 
